@@ -11,4 +11,4 @@ rotPerIn = 0.5
 inches = 1
 
 tank_drive = MoveTank(OUTPUT_A, OUTPUT_D)
-tank_drive.on_for_rotations(SpeedPercent(50), SpeedPercent(50), rotPerIn*inches)
+tank_drive.on_for_rotations(SpeedPercent(-50), SpeedPercent(-50), rotPerIn*inches)
