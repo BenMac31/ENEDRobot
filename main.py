@@ -10,7 +10,5 @@ from ev3dev2.led import Leds
 rotPercm = 1
 cm = 1
 
-A = LargeMotor(OUTPUT_A)
-A.on_for_rotations(SpeedPercent(75), rotPercm*cm)
-D = LargeMotor(OUTPUT_D)
-D.on_for_rotations(SpeedPercent(75), rotPercm*cm)
+tank_drive = MoveTank(OUTPUT_A, OUTPUT_D)
+tank_drive.on_for_rotations(SpeedPercent(75), SpeedPercent(75), rotPercm*cm)
