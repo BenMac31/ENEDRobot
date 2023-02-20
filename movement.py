@@ -28,7 +28,7 @@ def turn(degrees, power, tank):
 def fix_angle(gs, degrees, power, tank):
     tank.turn_degrees(
         speed=SpeedPercent(power),
-        target_angle=degrees-gs.angle,
+        target_angle=(degrees-gs.angle)/2,
     )
 
 
