@@ -9,7 +9,7 @@ from ev3dev2.led import Leds
 from ev3dev2.sound import Sound
 import math
 import movement
-from ev3dev2.wheel import EV3Tire
+from ev3dev2.wheel import EV3EducationSetRim
 
 
 # tank = MoveTank(OUTPUT_A, OUTPUT_D)
@@ -27,8 +27,7 @@ from ev3dev2.wheel import EV3Tire
 # Subtask 1A
 # movement.SubTask1A(30, 10, tank)
 STUD_MM=8
-mdiff = MoveDifferential(OUTPUT_A, OUTPUT_D, EV3Tire, 8 * STUD_MM)
-mdiff = MoveDifferential(OUTPUT_A, OUTPUT_D, EV3Tire, 16 * STUD_MM)
+mdiff = MoveDifferential(OUTPUT_A, OUTPUT_D, EV3EducationSetRim, 8 * STUD_MM)
 
 # Rotate 90 degrees clockwise
 mdiff.turn_right(SpeedRPM(40), 90)
@@ -38,7 +37,7 @@ mdiff.on_for_distance(SpeedRPM(40), 500)
 
 # Drive in arc to the right along an imaginary circle of radius 150 mm.
 # Drive for 700 mm around this imaginary circle.
-mdiff.on_arc_right(SpeedRPM(80), 150, 700)
+mdiff.on_arc_right(SpeedRPM(40), 150, 700)
 
 # Enable odometry
 mdiff.odometry_start()
