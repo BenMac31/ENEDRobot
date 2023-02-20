@@ -11,4 +11,4 @@ inches = 1
 powerPerInch = 25;
 
 tank_drive = MoveTank(OUTPUT_A, OUTPUT_D)
-tank_drive.on_for_rotations(SpeedPercent(-powerPerInch), SpeedPercent(-powerPerInch), rotPerIn*inches)
+tank_drive.on_for_rotations(SpeedPercent(-powerPerInch), SpeedPercent(-powerPerInch), inches)
