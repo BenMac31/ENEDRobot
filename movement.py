@@ -28,9 +28,10 @@ def turn(degrees, power, tank):
     )
 
 
-def SubTask1A(cm, laps, tank, power=30):
+def SubTask1A(cm, laps, tank, gs, sound, power=30):
     dir = True
     for i in range(laps*2):
         move(dir*(cm*2)-cm, power, tank)
+        sound.speak(gs.angle_and_rate)
         turn(0, 30, tank)
         dir = not dir

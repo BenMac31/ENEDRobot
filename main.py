@@ -25,4 +25,4 @@ sleep(1)
 tank.gyro = gs
 
 # Subtask 1A
-movement.SubTask1A(30, 10, tank)
+movement.SubTask1A(30, 10, tank, gs, sound)
