@@ -28,4 +28,4 @@ tank.gyro = gs
 # movement.SubTask1A(30, 10, tank, gs) # Produces error of 4.4.166667cm x, 2.666667cm y
 
 # Subtask 1B
-movement.SubTask1B(30, 10, tank, gs, sound) # Produces error of 8cm y, 2.4x
+movement.SubTask1B(30, 10, tank, gs, sound)

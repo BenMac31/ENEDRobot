@@ -44,6 +44,6 @@ def SubTask1B(cm, laps, tank, gs, sound, power=30):
     dir = True
     for i in range(laps):
         move(cm, power, tank)
-        turn(dir*180, power, tank)
-        sound.speak(gs.angle_and_rate)
+        turn((dir*360)-180, power, tank)
+        # sound.speak(gs.angle_and_rate)
         dir = not dir
