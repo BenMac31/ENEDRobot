@@ -32,10 +32,18 @@ def fix_angle(gs, degrees, power, tank):
     )
 
 
-def SubTask1A(cm, laps, tank, gs, sound, power=30):
+def SubTask1A(cm, laps, tank, gs, power=30):
     dir = True
     for i in range(laps*2):
         move(dir*(cm*2)-cm, power, tank)
+        fix_angle(gs, 0, power, tank)
+        dir = not dir
+
+
+def SubTask1B(cm, laps, tank, gs, sound, power=30):
+    dir = True
+    for i in range(laps):
+        move(cm, power, tank)
+        turn((dir*360)-180, power)
         sound.speak(gs.angle_and_rate)
-        fix_angle(gs, 0, 30, tank)
         dir = not dir
