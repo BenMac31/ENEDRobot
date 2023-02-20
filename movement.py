@@ -9,6 +9,7 @@ from ev3dev2.led import Leds
 from ev3dev2.sound import Sound
 import math
 
+
 def move(cm, power, tank):
     cm *= 0.05494276
 
@@ -16,11 +17,20 @@ def move(cm, power, tank):
             SpeedPercent(-power), SpeedPercent(-power), cm
             )
 
+
 def turn(degrees, power, tank):
     tank.turn_degrees(
         speed=SpeedPercent(power),
         target_angle=degrees,
     )
+
+
+def fixangle(degrees, power, tank):
+    tank.turn_degrees(
+        speed=SpeedPercent(power),
+        target_angle=degrees,
+    )
+
 
 def SubTask1A(cm, laps, tank, power=30):
     dir = True
