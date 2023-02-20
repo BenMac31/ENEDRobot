@@ -19,6 +19,11 @@ def move(inches, power):
     tank.on_for_rotations(
             SpeedPercent(-power), SpeedPercent(-power), inches*rotPerInch
             )
+def turn(degrees, power):
+    tank.turn_degrees(
+        speed=SpeedPercent(power),
+        target_angle=degrees,
+    )
 
 
 sound = Sound()
@@ -34,8 +39,6 @@ gs = GyroSensor(INPUT_1)
 tank.gyro = gs
 
 for i in range(5):
-    move(10, 30)
-    tank.turn_degrees(
-        speed=SpeedPercent(30),
-        target_angle=180,
-    )
+    move(10, 100)
+    turn(180, 100)
+move(10, 30)
