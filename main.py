@@ -13,7 +13,7 @@ from ev3dev2.wheel import EV3EducationSetRim
 
 
 # tank = MoveTank(OUTPUT_A, OUTPUT_D)
-# sound = Sound()
+sound = Sound()
 # gs = GyroSensor(INPUT_1)
 
 # # Calibrate gyroscope
@@ -26,30 +26,31 @@ from ev3dev2.wheel import EV3EducationSetRim
 
 # Subtask 1A
 # movement.SubTask1A(30, 10, tank)
-STUD_MM=8
-mdiff = MoveDifferential(OUTPUT_A, OUTPUT_D, EV3EducationSetRim, 100)
+# # Rotate 90 degrees clockwise
+# mdiff.turn_right(SpeedRPM(40), 90)
 
-# Rotate 90 degrees clockwise
-mdiff.turn_right(SpeedRPM(40), 90)
+# # Drive forward 500 mm
+# mdiff.on_for_distance(SpeedRPM(40), 500)
 
-# Drive forward 500 mm
-mdiff.on_for_distance(SpeedRPM(40), 500)
+# # Drive in arc to the right along an imaginary circle of radius 150 mm.
+# # Drive for 700 mm around this imaginary circle.
+# mdiff.on_arc_right(SpeedRPM(40), 150, 700)
 
-# Drive in arc to the right along an imaginary circle of radius 150 mm.
-# Drive for 700 mm around this imaginary circle.
-mdiff.on_arc_right(SpeedRPM(40), 150, 700)
+# # Enable odometry
+# mdiff.odometry_start()
 
-# Enable odometry
-mdiff.odometry_start()
+# # Use odometry to drive to specific coordinates
+# mdiff.on_to_coordinates(SpeedRPM(40), 300, 300)
 
-# Use odometry to drive to specific coordinates
-mdiff.on_to_coordinates(SpeedRPM(40), 300, 300)
+# # Use odometry to go back to where we started
+# mdiff.on_to_coordinates(SpeedRPM(40), 0, 0)
 
-# Use odometry to go back to where we started
-mdiff.on_to_coordinates(SpeedRPM(40), 0, 0)
+# # Use odometry to rotate in place to 90 degrees
+# mdiff.turn_to_angle(SpeedRPM(40), 90)
 
-# Use odometry to rotate in place to 90 degrees
-mdiff.turn_to_angle(SpeedRPM(40), 90)
-
-# Disable odometry
-mdiff.odometry_stop()
+# # Disable odometry
+# mdiff.odometry_stop()
+for i in range(10, 500, 10):
+    mdiff = MoveDifferential(OUTPUT_A, OUTPUT_D, EV3EducationSetRim, i)
+    sound.speak(i)
+    mdiff.on_arc_right(SpeedRPM(40), 200, 1256.637)
