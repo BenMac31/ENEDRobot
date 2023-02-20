@@ -19,7 +19,7 @@ def move(inches, power):
 
 
 def turn(degrees, power):
-    rotPerDeg = 0.5582184
+    rotPerDeg = 1
 
     tank_drive = MoveTank(OUTPUT_A, OUTPUT_D)
     tank_drive.on_for_rotations(
@@ -28,5 +28,5 @@ def turn(degrees, power):
 
 
 # move(10, 50)
-turn(math.pi, 50)
+turn(1, 50)
 # move(10, 50)
