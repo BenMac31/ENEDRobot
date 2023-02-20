@@ -50,7 +50,7 @@ sound = Sound()
 
 # # Disable odometry
 # mdiff.odometry_stop()
-for i in range(10, 500, 10):
+for i in range(85, 95, 1):
     mdiff = MoveDifferential(OUTPUT_A, OUTPUT_D, EV3EducationSetRim, i)
     sound.speak(i)
     mdiff.on_arc_right(SpeedRPM(40), 200, 1256.637)
