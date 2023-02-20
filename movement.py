@@ -22,13 +22,19 @@ def turn(degrees, power, tank):
     tank.turn_degrees(
         speed=SpeedPercent(power),
         target_angle=degrees,
+        brake=True,
+        block=True,
+        use_gyro=True
     )
 
 
 def fixangle(degrees, power, tank):
-    tank.turn_degrees(
+    tank.turn_to_angle(
         speed=SpeedPercent(power),
         target_angle=degrees,
+        brake=True,
+        block=True,
+        use_gyro=True
     )
 
 
@@ -36,5 +42,5 @@ def SubTask1A(cm, laps, tank, power=30):
     dir = True
     for i in range(laps*2):
         move(dir*(cm*2)-cm, power, tank)
-        turn(0, 30, tank)
+        fixangle(0, 30, tank)
         dir = not dir
