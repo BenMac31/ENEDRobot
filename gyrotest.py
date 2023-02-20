@@ -18,5 +18,5 @@ sleep(1)
 gs.calibrate()
 sound.speak("Calibration complete.")
 while True:
-    print(f"{gs.angle_and_rate}")
+    print(gs.angle_and_rate)
     sleep(0.1)
