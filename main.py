@@ -12,17 +12,17 @@ import movement
 from ev3dev2.wheel import EV3Tire
 
 
-tank = MoveTank(OUTPUT_A, OUTPUT_D)
-sound = Sound()
-gs = GyroSensor(INPUT_1)
+# tank = MoveTank(OUTPUT_A, OUTPUT_D)
+# sound = Sound()
+# gs = GyroSensor(INPUT_1)
 
-# Calibrate gyroscope
-sound.speak("Calibrating, do not touch mindstorm.")
-sleep(1)
-gs.calibrate()
-sound.speak("Calibration complete.")
-sleep(1)
-tank.gyro = gs
+# # Calibrate gyroscope
+# sound.speak("Calibrating, do not touch mindstorm.")
+# sleep(1)
+# gs.calibrate()
+# sound.speak("Calibration complete.")
+# sleep(1)
+# tank.gyro = gs
 
 # Subtask 1A
 # movement.SubTask1A(30, 10, tank)
