@@ -22,6 +22,12 @@ def turn(degrees, power, tank):
     tank.turn_degrees(
         speed=SpeedPercent(power),
         target_angle=degrees,
+    )
+
+def fix_angle(degrees, power, tank):
+    tank.turn_degrees(
+        speed=SpeedPercent(power),
+        target_angle=degrees,
         brake=True,
         block=True,
         use_gyro=True
