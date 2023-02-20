@@ -25,7 +25,7 @@ sleep(1)
 tank.gyro = gs
 
 # Subtask 1A
-movement.SubTask1A(30, 10, tank, gs) # Produces error of 8cm y, 2.4x
+# movement.SubTask1A(30, 10, tank, gs) # Produces error of 8cm y, 2.4x
 
 # Subtask 1B
 movement.SubTask1B(30, 10, tank, gs, sound) # Produces error of 8cm y, 2.4x
