@@ -8,7 +8,7 @@ from ev3dev2.sensor.lego import TouchSensor
 from ev3dev2.led import Leds
 
 inches = 1
-powerPerInch = 25;
+powerPerInch = 3.571429;
 
 tank_drive = MoveTank(OUTPUT_A, OUTPUT_D)
 tank_drive.on_for_rotations(SpeedPercent(-powerPerInch), SpeedPercent(-powerPerInch), inches)
