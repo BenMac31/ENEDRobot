@@ -17,4 +17,4 @@ def move(inches, power):
             )
 
 
-move(1, 50)
+move(10, 50)
