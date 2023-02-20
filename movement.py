@@ -36,7 +36,7 @@ def SubTask1A(cm, laps, tank, gs, power=30):
     dir = True
     for i in range(laps*2):
         move(dir*(cm*2)-cm, power, tank)
-        fix_angle(gs, 0, power/10, tank)
+        # fix_angle(gs, 0, power/10, tank)
         dir = not dir
 
 
