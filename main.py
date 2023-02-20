@@ -6,6 +6,7 @@ from ev3dev2.motor import LargeMotor, OUTPUT_A, OUTPUT_B, SpeedPercent, MoveTank
 from ev3dev2.sensor import INPUT_1
 from ev3dev2.sensor.lego import TouchSensor
 from ev3dev2.led import Leds
+import math
 
 
 def move(inches, power):
@@ -27,5 +28,5 @@ def turn(degrees, power):
 
 
 # move(10, 50)
-turn(180, 50)
+turn(math.pi, 50)
 # move(10, 50)
