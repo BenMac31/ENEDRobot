@@ -11,8 +11,12 @@ from ev3dev2.sound import Sound
 import math
 
 sound = Sound()
-sound.speak("When the robot is sus.")
-# gs = GyroSensor(INPUT_1)
-# while True:
-#     print(gs.)
-#     sleep(0.01)
+
+gs = GyroSensor(INPUT_1)
+sound.speak("Calibrating, do not touch mindstorm.")
+sleep(1)
+gs.calibrate()
+sound.speak("Calibration complete.")
+while True:
+    print(f"{gs.angle_and_rate}")
+    sleep(0.1)
