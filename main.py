@@ -33,8 +33,14 @@ sleep(1)
 
 tank.gyro = gs
 
-# move(10, 50)
-tank.turn_degrees(
-    speed=SpeedPercent(30),
-    target_angle=180,
-)
+for i in range(5):
+    move(10, 30)
+    tank.turn_degrees(
+        speed=SpeedPercent(30),
+        target_angle=180,
+    )
+    move(-10, 30)
+    tank.turn_degrees(
+        speed=SpeedPercent(30),
+        target_angle=0,
+    )
