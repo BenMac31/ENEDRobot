@@ -25,5 +25,5 @@ def turn(degrees, power, tank):
 def SubTask1A(cm, laps, tank, power=30):
     dir = True
     for i in range(laps*2):
-        move(dir*(cm*2)-cm, power)
+        move(dir*(cm*2)-cm, power, tank)
         dir = not dir
