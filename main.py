@@ -37,5 +37,7 @@ tank.gyro = gs
 tank.follow_gyro_angle(
     kp=11.3, ki=0.05, kd=3.2,
     speed=SpeedPercent(30),
-    target_angle=180,
+    target_angle=0,
+    follow_for=follow_for_ms,
+    ms=4500
 )
