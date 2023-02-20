@@ -30,14 +30,16 @@ sound = Sound()
 
 gs = GyroSensor(INPUT_1)
 
-# sound.speak("Calibrating, do not touch mindstorm.")
-# sleep(1)
-# gs.calibrate()
-# sound.speak("Calibration complete.")
-# sleep(1)
+sound.speak("Calibrating, do not touch mindstorm.")
+sleep(1)
+gs.calibrate()
+sound.speak("Calibration complete.")
+sleep(1)
 
 tank.gyro = gs
+dir = True
 
 for i in range(6):
     move(10, 30)
-    turn(180, 30)
+    turn((-1*dir)*180, 30)
+    dir = not dir
