@@ -23,10 +23,10 @@ def turn(degrees, power):
 
     tank_drive = MoveTank(OUTPUT_A, OUTPUT_D)
     tank_drive.on_for_rotations(
-            SpeedPercent(-power), SpeedPercent(power), degrees*rotPerDeg
+            SpeedPercent(-power/2), SpeedPercent(power), degrees*rotPerDeg
             )
 
 
 # move(10, 50)
-turn(1, 50)
+turn(2, 50)
 # move(10, 50)
