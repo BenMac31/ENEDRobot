@@ -41,5 +41,5 @@ dir = True
 
 for i in range(6):
     move(10, 30)
-    turn((-1*dir)*180, 30)
+    turn(dir*360-180, 30)
     dir = not dir
