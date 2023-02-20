@@ -39,8 +39,3 @@ for i in range(5):
         speed=SpeedPercent(30),
         target_angle=180,
     )
-    move(10, 30)
-    tank.turn_degrees(
-        speed=SpeedPercent(30),
-        target_angle=0,
-    )
