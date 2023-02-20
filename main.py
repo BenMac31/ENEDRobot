@@ -9,7 +9,7 @@ from ev3dev2.led import Leds
 
 
 def move(inches, power):
-    rotPerInch = 0.1535101
+    rotPerInch = 0.1395546
 
     tank_drive = MoveTank(OUTPUT_A, OUTPUT_D)
     tank_drive.on_for_rotations(
