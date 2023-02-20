@@ -38,7 +38,6 @@ gs = GyroSensor(INPUT_1)
 
 tank.gyro = gs
 
-for i in range(5):
-    move(10, 100)
-    turn(180, 100)
-move(10, 30)
+for i in range(6):
+    move(10, 30)
+    turn(180, 30)
