@@ -27,8 +27,8 @@ from ev3dev2.wheel import EV3Tire
 # Subtask 1A
 # movement.SubTask1A(30, 10, tank)
 STUD_MM=8
-mdiff = MoveDifferential(OUTPUT_A, OUTPUT_B, EV3Tire, 8 * STUD_MM)
-mdiff = MoveDifferential(OUTPUT_A, OUTPUT_B, EV3Tire, 16 * STUD_MM)
+mdiff = MoveDifferential(OUTPUT_A, OUTPUT_D, EV3Tire, 8 * STUD_MM)
+mdiff = MoveDifferential(OUTPUT_A, OUTPUT_D, EV3Tire, 16 * STUD_MM)
 
 # Rotate 90 degrees clockwise
 mdiff.turn_right(SpeedRPM(40), 90)
