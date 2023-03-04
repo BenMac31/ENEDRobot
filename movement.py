@@ -11,6 +11,7 @@ import math
 
 
 def move(cm, power, tank):
+    """Moves 'cm' cm forward (backwards is negative.)"""
     cm *= 0.05494276
 
     tank.on_for_rotations(
@@ -19,6 +20,7 @@ def move(cm, power, tank):
 
 
 def turn(degrees, power, tank):
+    """Turns 'degrees' degrees clockwise (counterclockwise is negative.)"""
     tank.turn_degrees(
         speed=SpeedPercent(power),
         target_angle=degrees,
@@ -26,10 +28,26 @@ def turn(degrees, power, tank):
 
 
 def fix_angle(gs, degrees, power, tank):
+    """Puts the angle of the robot to be the angle provided, not sure if it is actually differant than 'turn' """
     tank.turn_degrees(
         speed=SpeedPercent(power),
         target_angle=(degrees-gs.angle)/2,
     )
+
+def cartesian_move(x, y, power, tank, pos):
+    """Moves to an x and y location by first moving to the y position, then turning 90 degrees and moving to the x location."""
+    move(y, power, tank)
+    turn(90, power, tank)
+    move(x, power, tank)
+    pos[0]+=x
+    pos[1]+=y
+
+def vector_move(x, y, power, tank, pos):
+    """Moves to an x and y location by first turning x nuber of degrees than moving x number of meters"""
+    turn((math.atan(y/x)*180)/math.pi, power, tank) # POSSIBLE ERROR LOCATED HERE. If an error occurs switch (y/x) to (x/y)
+    move(math.sqrt(x**2+y**2), power, tank)
+    pos[0]+=x
+    pos[1]+=y
 
 
 def SubTask1A(cm, laps, tank, gs, power=30):

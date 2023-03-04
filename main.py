@@ -28,4 +28,17 @@ tank.gyro = gs
 # movement.SubTask1A(30, 10, tank, gs) # Produces error of 4.4.166667cm x, 2.666667cm y
 
 # Subtask 1B
-movement.SubTask1B(30, 10, tank, gs, sound)
+pos=[0,0]
+movement.cartesian_move(50, 50, 30, tank, pos)
+sound.speak("Please move robot back to original position.")
+sound.speak("Robot should move to the same position it previously moved to, if it does not please alert lead programmer.")
+sleep(10)
+movement.vector_move(50, 50, 30, tank, pos)
+sound.speak("Current position should be 100, 100")
+sound.speak(f"current position is: {pos[0]}, {pos[1]}")
+sound.speak("If these positions differ please alert lead programmer.")
+sound.speak("Should return to original position if it does not, please alart lead programmer.")
+movement.vector_move(-50, -50, 30, tank, pos)
+sound.speak("Current position should be 50, 50")
+sound.speak(f"current position is: {pos[0]}, {pos[1]}")
+sound.speak("If these positions differ please alert lead programmer.")
