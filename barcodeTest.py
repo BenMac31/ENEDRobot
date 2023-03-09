@@ -19,3 +19,4 @@ cs = ColorSensor(INPUT_3)
 
 # Calibrate gyroscope
 sensors.readBarcode(cs, tank)
+sleep(10)
