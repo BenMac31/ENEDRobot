@@ -2,14 +2,11 @@
 
 from time import sleep
 
-from ev3dev2.motor import LargeMotor, OUTPUT_A, OUTPUT_B, SpeedPercent, MoveTank, OUTPUT_D, MoveDifferential, SpeedRPM
+from ev3dev2.motor import OUTPUT_A, MoveTank, OUTPUT_D
 from ev3dev2.sensor import INPUT_1, INPUT_2
-from ev3dev2.sensor.lego import TouchSensor, GyroSensor, UltrasonicSensor
-from ev3dev2.led import Leds
+from ev3dev2.sensor.lego import GyroSensor, UltrasonicSensor
 from ev3dev2.sound import Sound
-import math
 import movement
-from ev3dev2.wheel import EV3EducationSetRim
 
 
 tank = MoveTank(OUTPUT_A, OUTPUT_D)
@@ -43,5 +40,3 @@ movement.vector_move(-50, -50, tank, pos)
 sound.speak("Current position should be 50, 50")
 sound.speak(f"current position is: {pos[0]}, {pos[1]}")
 sound.speak("If these positions differ please alert lead programmer.")
-sound.speak("Testing careful movement, robot will move 1 meter forward and stop if there is an obstacle.")
-movement.carefuleMove(100, tank, us, sound)
