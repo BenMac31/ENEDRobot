@@ -10,7 +10,7 @@ import math
 
 def move(cm, tank : MoveTank, power = 30):
     """Moves 'cm' cm forward (backwards is negative.)"""
-    cm *= 0.05494276
+    cm *= 0.059184341072
 
     tank.on_for_rotations(
             SpeedPercent(-power), SpeedPercent(-power), cm
