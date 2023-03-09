@@ -2,7 +2,7 @@
 
 from time import sleep
 
-from ev3dev2.motor import LargeMotor, SpeedPercent, MoveTank
+from ev3dev2.motor import SpeedPercent, MoveTank
 from ev3dev2.sensor.lego import GyroSensor, UltrasonicSensor
 from ev3dev2.sound import Sound
 import math
@@ -35,7 +35,7 @@ def turn(degrees, tank : MoveTank, power = 30):
     """Turns 'degrees' degrees clockwise (counterclockwise is negative.)"""
     tank.turn_degrees(
         speed=SpeedPercent(power),
-        target_angle=degrees,
+        target_angle=-degrees,
     )
 
 
@@ -43,7 +43,7 @@ def fix_angle(gs : GyroSensor, degrees, tank : MoveTank, power = 30):
     """Puts the angle of the robot to be the angle provided, not sure if it is actually differant than 'turn' """
     tank.turn_degrees(
         speed=SpeedPercent(power),
-        target_angle=(degrees-gs.angle)/2,
+        target_angle=-(degrees-gs.angle)/2,
     )
 
 def cartesian_move(x, y, tank : MoveTank, pos, power = 30):
@@ -51,6 +51,7 @@ def cartesian_move(x, y, tank : MoveTank, pos, power = 30):
     move(y, tank, power)
     turn(90, tank, power)
     move(x, tank, power)
+    turn(-90, tank, power)
     pos[0]+=x
     pos[1]+=y
 
