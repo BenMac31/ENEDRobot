@@ -34,8 +34,8 @@ def carefuleMove(cm, tank : MoveTank, us : UltrasonicSensor, sound : Sound, powe
 def turn(degrees, tank : MoveTank, power = 30):
     """Turns 'degrees' degrees clockwise (counterclockwise is negative.)"""
     tank.turn_degrees(
-        speed=SpeedPercent(power),
-        target_angle=-degrees,
+        speed=SpeedPercent(-power),
+        target_angle=degrees,
     )
 
 
