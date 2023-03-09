@@ -3,8 +3,8 @@
 from time import sleep
 
 from ev3dev2.motor import OUTPUT_A, MoveTank, OUTPUT_D
-from ev3dev2.sensor import INPUT_1, INPUT_2
-from ev3dev2.sensor.lego import GyroSensor, UltrasonicSensor
+from ev3dev2.sensor import INPUT_1
+from ev3dev2.sensor.lego import GyroSensor
 from ev3dev2.sound import Sound
 import movement
 
@@ -12,7 +12,6 @@ import movement
 tank = MoveTank(OUTPUT_A, OUTPUT_D)
 sound = Sound()
 gs = GyroSensor(INPUT_1)
-us = UltrasonicSensor(INPUT_2)
 
 # Calibrate gyroscope
 sound.speak("Calibrating, do not touch mindstorm.")
