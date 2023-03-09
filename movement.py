@@ -55,12 +55,12 @@ def cartesian_move(x, y, tank : MoveTank, pos, power = 30):
     pos[0]+=x
     pos[1]+=y
 
-def vector_move(x, y, tank : MoveTank, pos, power = 30):
-    """Moves to an x and y location by first turning x nuber of degrees than moving x number of meters"""
-    turn((math.atan(y/x)*180)/math.pi, tank, power) # POSSIBLE ERROR LOCATED HERE. If an error occurs switch (y/x) to (x/y)
-    move(math.sqrt(x**2+y**2), tank, power)
-    pos[0]+=x
-    pos[1]+=y
+# def vector_move(x, y, tank : MoveTank, pos, power = 30):
+#     """Moves to an x and y location by first turning x nuber of degrees than moving x number of meters"""
+#     turn((math.atan(y/x)*180)/math.pi, tank, power) # POSSIBLE ERROR LOCATED HERE. If an error occurs switch (y/x) to (x/y)
+#     move(math.sqrt(x**2+y**2), tank, power)
+#     pos[0]+=x
+#     pos[1]+=y
 
 
 def SubTask1A(cm, laps, tank : MoveTank, gs : GyroSensor, power=30):
