@@ -7,7 +7,7 @@
 def displayBarCode(number):
     for binary in '{0:04b}'.format(number):
         if binary == "1":
-            print("█", end='')
+            print("#", end='')
         else:
             print(" ", end='')
     print()
