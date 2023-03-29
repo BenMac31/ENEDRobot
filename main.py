@@ -30,9 +30,10 @@ tank.gyro = gs
 
 # Subtask 1B
 moveAmount=12*2.54
+moveAmount=12*2.54
 while True:
     if ts.is_pressed:
-        movement.move(moveAmount, tank)
+        movement.cartesian_move(moveAmount, tank)
         sleep (1)
     # don't let this loop use 100% CPU
     sleep(0.01)

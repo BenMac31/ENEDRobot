@@ -48,10 +48,14 @@ def fix_angle(gs : GyroSensor, degrees, tank : MoveTank, power = 30):
 
 def cartesian_move(x, y, tank : MoveTank, pos, power = 30):
     """Moves to an x and y location by first moving to the y position, then turning 90 degrees and moving to the x location."""
-    move(y, tank, power)
-    turn(90, tank, power)
-    move(x, tank, power)
-    turn(-90, tank, power)
+    if y!=0:
+        move(y, tank, power)
+    if x!=0:
+        turnDir=(x < 0)*-2+1
+        turn(90*turnDir, tank, power)
+        x=abs(x)
+        move(x, tank, power)
+        turn(90*turnDir, tank, power)
     pos[0]+=x
     pos[1]+=y
 
