@@ -8,23 +8,23 @@ from ev3dev2.sound import Sound
 import math
 
 
-def move(cm, tank : MoveTank, power = 10):
-    """Moves 'cm' cm forward (backwards is negative.)"""
-    cm *= 0.01766697
+def move(inch, tank : MoveTank, power = 10):
+    """Moves 'inch' inch forward (backwards is negative.)"""
+    inch *= 0.0069555
 
     tank.on_for_rotations(
-            SpeedPercent(power), SpeedPercent(power), cm
+            SpeedPercent(power), SpeedPercent(power), inch
             )
 
-def carefuleMove(cm, tank : MoveTank, us : UltrasonicSensor, sound : Sound, power = 10, carefulness = 15):
-    """Moves 'cm' cm forward (backwards is negative.)"""
-    cmEachTime=cm/int(cm/10);
-    for i in range(int(cm/10)):
+def carefuleMove(inch, tank : MoveTank, us : UltrasonicSensor, sound : Sound, power = 10, carefulness = 15):
+    """Moves 'inch' inch forward (backwards is negative.)"""
+    inchEachTime=inch/int(inch/10);
+    for i in range(int(inch/10)):
         distance = us.distance_centimeters_ping
         if distance > carefulness:
-            move(cmEachTime, tank, power)
+            move(inchEachTime, tank, power)
         else:
-            sound.speak("Detected object {distance} cm away, refusing to move.");
+            sound.speak("Detected object {distance} inch away, refusing to move.");
             distance = us.distance_centimeters_ping
             while distance < carefulness:
                 sleep(1);
@@ -67,18 +67,18 @@ def cartesian_move(x, y, tank : MoveTank, pos, power = 10):
 #     pos[1]+=y
 
 
-def SubTask1A(cm, laps, tank : MoveTank, gs : GyroSensor, power=10):
+def SubTask1A(inch, laps, tank : MoveTank, gs : GyroSensor, power=10):
     dir = True
     for i in range(laps*2):
-        move(dir*(cm*2)-cm, tank, power)
+        move(dir*(inch*2)-inch, tank, power)
         # fix_angle(gs, 0, power/10, tank)
         dir = not dir
 
 
-def SubTask1B(cm, laps, tank : MoveTank, gs : GyroSensor, sound, power=10):
+def SubTask1B(inch, laps, tank : MoveTank, gs : GyroSensor, sound, power=10):
     dir = True
     for i in range(laps):
-        move(cm, tank, power)
+        move(inch, tank, power)
         turn((dir*360)-180, tank, power)
         # sound.speak(gs.angle_and_rate)
         dir = not dir
