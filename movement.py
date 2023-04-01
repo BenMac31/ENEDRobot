@@ -8,15 +8,15 @@ from ev3dev2.sound import Sound
 import math
 
 
-def move(cm, tank : MoveTank, power = 30):
+def move(cm, tank : MoveTank, power = 10):
     """Moves 'cm' cm forward (backwards is negative.)"""
-    cm *= 0.059184341072
+    cm *= 0.01766697
 
     tank.on_for_rotations(
-            SpeedPercent(-power), SpeedPercent(-power), cm
+            SpeedPercent(power), SpeedPercent(power), cm
             )
 
-def carefuleMove(cm, tank : MoveTank, us : UltrasonicSensor, sound : Sound, power = 30, carefulness = 15):
+def carefuleMove(cm, tank : MoveTank, us : UltrasonicSensor, sound : Sound, power = 10, carefulness = 15):
     """Moves 'cm' cm forward (backwards is negative.)"""
     cmEachTime=cm/int(cm/10);
     for i in range(int(cm/10)):
@@ -31,7 +31,7 @@ def carefuleMove(cm, tank : MoveTank, us : UltrasonicSensor, sound : Sound, powe
                 distance = us.distance_centimeters_ping
 
 
-def turn(degrees, tank : MoveTank, power = 30):
+def turn(degrees, tank : MoveTank, power = 10):
     """Turns 'degrees' degrees clockwise (counterclockwise is negative.)"""
     tank.turn_degrees(
         speed=SpeedPercent(-power),
@@ -39,14 +39,14 @@ def turn(degrees, tank : MoveTank, power = 30):
     )
 
 
-def fix_angle(gs : GyroSensor, degrees, tank : MoveTank, power = 30):
+def fix_angle(gs : GyroSensor, degrees, tank : MoveTank, power = 10):
     """Puts the angle of the robot to be the angle provided, not sure if it is actually differant than 'turn' """
     tank.turn_degrees(
         speed=SpeedPercent(power),
         target_angle=-(degrees-gs.angle)/2,
     )
 
-def cartesian_move(x, y, tank : MoveTank, pos, power = 30):
+def cartesian_move(x, y, tank : MoveTank, pos, power = 10):
     """Moves to an x and y location by first moving to the y position, then turning 90 degrees and moving to the x location."""
     if y!=0:
         move(y, tank, power)
@@ -59,7 +59,7 @@ def cartesian_move(x, y, tank : MoveTank, pos, power = 30):
     pos[0]+=x
     pos[1]+=y
 
-# def vector_move(x, y, tank : MoveTank, pos, power = 30):
+# def vector_move(x, y, tank : MoveTank, pos, power = 10):
 #     """Moves to an x and y location by first turning x nuber of degrees than moving x number of meters"""
 #     turn((math.atan(y/x)*180)/math.pi, tank, power) # POSSIBLE ERROR LOCATED HERE. If an error occurs switch (y/x) to (x/y)
 #     move(math.sqrt(x**2+y**2), tank, power)
@@ -67,7 +67,7 @@ def cartesian_move(x, y, tank : MoveTank, pos, power = 30):
 #     pos[1]+=y
 
 
-def SubTask1A(cm, laps, tank : MoveTank, gs : GyroSensor, power=30):
+def SubTask1A(cm, laps, tank : MoveTank, gs : GyroSensor, power=10):
     dir = True
     for i in range(laps*2):
         move(dir*(cm*2)-cm, tank, power)
@@ -75,7 +75,7 @@ def SubTask1A(cm, laps, tank : MoveTank, gs : GyroSensor, power=30):
         dir = not dir
 
 
-def SubTask1B(cm, laps, tank : MoveTank, gs : GyroSensor, sound, power=30):
+def SubTask1B(cm, laps, tank : MoveTank, gs : GyroSensor, sound, power=10):
     dir = True
     for i in range(laps):
         move(cm, tank, power)

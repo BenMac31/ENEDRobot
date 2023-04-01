@@ -30,7 +30,6 @@ tank.gyro = gs
 
 # Subtask 1B
 moveAmount=12*2.54
-moveAmount=12*2.54
 while True:
     if ts.is_pressed:
         movement.cartesian_move(moveAmount, tank)
