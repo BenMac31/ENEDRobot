@@ -1,27 +1,27 @@
 #!/usr/bin/env python3
 
 from time import sleep
-import display
 
 # from ev3dev2.motor import LargeMotor, OUTPUT_A, OUTPUT_B, SpeedPercent, MoveTank, OUTPUT_D
 # from ev3dev2.sensor import INPUT_1
-from ev3dev2.sensor.lego import ColorSensor, TouchSensor
-from ev3dev2.sensor import INPUT_1, INPUT_2
+from ev3dev2.motor import LargeMotor, OUTPUT_A, OUTPUT_B, SpeedPercent, MoveTank, OUTPUT_D, MoveDifferential, SpeedRPM
+from ev3dev2.sensor.lego import ColorSensor
+from ev3dev2.sensor import INPUT_1
 
+import display
+import movement
 
-ts = TouchSensor(INPUT_1)
-cs = ColorSensor(INPUT_2)
+tank = MoveTank(OUTPUT_A, OUTPUT_D)
+cs = ColorSensor(INPUT_1)
 
 count = 0
 barVal = 0
 while count < 4:
-    if ts.is_pressed:
-        count += 1
-        colVal = cs.value()
-        if colVal > 50:
-            barVal += 1*(2**count);
-        sleep (0.5)
-    # don't let this loop use 100% CPU
+    movement.cartesian_move(0, 1.37*2.54, tank, [0, 0])
+    count += 1
+    colVal = cs.value()
+    if colVal > 30:
+        barVal += 1*(2**count);
     sleep(0.01)
 
 display.displayBarCode(barVal);
