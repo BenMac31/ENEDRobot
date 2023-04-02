@@ -19,5 +19,5 @@ us = UltrasonicSensor(INPUT_2)
 # Subtask 1A
 # movement.SubTask1A(30, 10, tank, gs) # Produces error of 4.4.166667cm x, 2.666667cm y
 
-sound.speak("Testing careful movement, robot will move 1 meter forward and stop if there is an obstacle.")
-movement.carefuleMove(100, tank, us, sound)
+sound.speak("Testing careful movement, robot will move 10 ft forward and stop if there is an obstacle.")
+movement.careful_move(120, tank, us, sound)

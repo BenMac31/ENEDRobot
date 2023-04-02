@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 from time import sleep
+import threading
 
 from ev3dev2.motor import SpeedPercent, MoveTank
 from ev3dev2.sensor.lego import GyroSensor, UltrasonicSensor
@@ -8,27 +9,31 @@ from ev3dev2.sound import Sound
 import math
 
 
-def move(inch, tank : MoveTank, power = 50):
+def move(inch, tank : MoveTank, power = 50, brake = True):
     """Moves 'inch' inch forward (backwards is negative.)"""
     inch *= 0.4313007
 
     tank.on_for_rotations(
-            SpeedPercent(power), SpeedPercent(power), inch
+            SpeedPercent(power), SpeedPercent(power), inch, brake = brake
             )
 
-def carefuleMove(inch, tank : MoveTank, us : UltrasonicSensor, sound : Sound, power = 50, carefulness = 15):
+def update_distance(us, distance):
+    while True:
+        distance[0] = us.distance_inches
+        sleep(0.5)
+
+def careful_move(inch, tank, us, sound, power=50, carefulness=12):
     """Moves 'inch' inch forward (backwards is negative.)"""
-    inchEachTime=inch/int(inch/10);
+    inch_each_time = inch // int(inch/10)
+    distance = [us.distance_inches]
+    threading.Thread(target=update_distance, args=(us, distance), daemon=True).start()
     for i in range(int(inch/10)):
-        distance = us.distance_centimeters_ping
-        if distance > carefulness:
-            move(inchEachTime, tank, power)
+        if distance[0] > carefulness:
+            move(inch_each_time, tank, power, brake=False)
         else:
-            sound.speak("Detected object {distance} inch away, refusing to move.");
-            distance = us.distance_centimeters_ping
-            while distance < carefulness:
-                sleep(1);
-                distance = us.distance_centimeters_ping
+            sound.speak("Detected object " + str(distance[0]) + "inches away, refusing to move.")
+            while distance[0] < carefulness:
+                sleep(1)
 
 
 def turn(degrees, tank : MoveTank, power = 50):
