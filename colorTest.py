@@ -19,7 +19,7 @@ cs = ColorSensor(INPUT_3)
 gs = GyroSensor(INPUT_1)
 medMotor = MediumMotor(OUTPUT_B)
 
-# Calibrate gyroscope
+# Calibrate
 sound.speak("Calibrating, do not touch mindstorm.")
 sleep(1)
 gs.calibrate()
@@ -27,22 +27,31 @@ sound.speak("Calibration complete.")
 sleep(1)
 tank.gyro = gs
 
-count = 0
+# Read values from barcode
 barVal = 0
-while count < 4:
+cols=[0 for i in range (4)]
+for count in range(4):
+    cols[count] = cs.value();
+    sleep(0.1)
     movement.cartesian_move(0, 0.5, tank, [0, 0], 20)
-    count += 1
-    colVal = cs.value()
-    # sound.speak(colVal)
-    if colVal > 30:
-        sound.speak("White")
-        barVal += 1*(2**count);
-    else:
-        sound.speak("Black")
-    sleep(0.5)
 
+# Calculate barcode number
+colMin=max(cols)
+for i in range(len(cols)):
+    if cols[i] < colMin - 20:
+        barVal += 1*(2**i)
+
+# Display barcode
 display.displayBarCode(barVal);
-movement.turn(-90, tank, 20)
-movement.cartesian_move(0, -2, tank, [0, 0], 20)
-medMotor.on_for_degrees(30, 45)
-movement.cartesian_move(0, 12, tank, [0, 0], 40)
+
+# Movement logic for picking up the box
+movement.move(2, tank, 20)
+movement.turn(90, tank, 20)
+movement.move(1, tank, 20)
+medMotor.on_for_rotations(-30, 4.5)
+movement.move(-2, tank, 20)
+medMotor.on_for_rotations(30, 2.5)
+movement.move(12, tank, 20)
+medMotor.on_for_rotations(-30, 2.5)
+movement.move(6, tank, 50)
+medMotor.on_for_rotations(30, 4.5)
