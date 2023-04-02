@@ -10,7 +10,7 @@ import math
 
 def move(inch, tank : MoveTank, power = 10):
     """Moves 'inch' inch forward (backwards is negative.)"""
-    inch *= 0.0069555
+    inch *= 0.04605033
 
     tank.on_for_rotations(
             SpeedPercent(power), SpeedPercent(power), inch
