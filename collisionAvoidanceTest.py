@@ -3,40 +3,60 @@
 from time import sleep
 import threading
 
-from ev3dev2.motor import LargeMotor, OUTPUT_A, OUTPUT_B, SpeedPercent, MoveTank, OUTPUT_D, MoveDifferential, SpeedRPM
+from ev3dev2.motor import LargeMotor, OUTPUT_A, SpeedPercent, MoveTank, OUTPUT_D, FollowGyroAngleErrorTooFast, follow_for_ms
 from ev3dev2.sensor import INPUT_1, INPUT_2
-from ev3dev2.sensor.lego import TouchSensor, GyroSensor, UltrasonicSensor
-from ev3dev2.led import Leds
+from ev3dev2.sensor.lego import GyroSensor, UltrasonicSensor
 from ev3dev2.sound import Sound
-from ev3dev2.wheel import EV3EducationSetRim
 
 
-tank = MoveTank(OUTPUT_A, OUTPUT_D)
-test = LargeMotor(OUTPUT_A)
+tank = MoveTank(OUTPUT_D, OUTPUT_A)
+rm = LargeMotor(OUTPUT_A)
+lm = LargeMotor(OUTPUT_D)
 sound = Sound()
 us = UltrasonicSensor(INPUT_2)
-stopOnDetect = True
+gs = GyroSensor(INPUT_1)
+gs = GyroSensor(INPUT_1)
+
+gs.calibrate()
+tank.gyro = gs
+
 distance = 999
+pos = 0
+usEnabled = True
+usLock = False
+posMod = 0
 
-def stopIfDistance():
-    while True:
-        distance = us.distance_inches
-        if stopOnDetect and distance[0] < 12:
-            tank.off()
-            sound.speak("Obstacle detected at " + str(distance) + " inches. Exiting program.")
-            quit()
+def followin(tank, distance) -> bool:
+    global usLock
+    global posMod
+    pos = ((rm.rotations+lm.rotations)/2) - posMod
+    if pos > distance:
+        print("Travelled " + str(int((pos)/0.4313007)) + " inches.")
+        posMod += pos
+        return False
+    elif (usEnabled == True):
+        obsDistance = us.distance_inches
+        if (obsDistance < 12):
+            print("Obstacle distance:" + str(int(obsDistance)) + " inches.")
+            usLock = True
+            posMod += pos
+            return False
+        else:
+            return True
+    else:
+        return True
 
-def readPositions():
-    while True:
-        pos = test.rotations
-        sound.speak(str((pos)/0.4313007) + "In")
+# threading.Thread(target=stopIfDistance, args=(), daemon=True).start()
 
-inch = 120
+while (not usLock):
+    tank.follow_gyro_angle(
+        kp=11.3, ki=0.05, kd=3.2,
+        speed=SpeedPercent(50),
+        target_angle=0,
+        sleep_time=0.01,
+        distance=240*0.4313007,
+        follow_for=followin,
+    )
 
-"""Moves 'inch' inch forward (backwards is negative.)"""
-threading.Thread(target=stopIfDistance, args=(), daemon=True).start()
-threading.Thread(target=readPositions, args=(), daemon=True).start()
-tank.on_for_rotations(SpeedPercent(50), SpeedPercent(50), 12*0.4313007)
-tank.on_for_rotations(SpeedPercent(50), SpeedPercent(50), 24*0.4313007)
-tank.on_for_rotations(SpeedPercent(50), SpeedPercent(50), 36*0.4313007)
-tank.on_for_rotations(SpeedPercent(50), SpeedPercent(50), 48*0.4313007)
+print("Total distance:"+ str(int((rm.rotations+lm.rotations)/2/0.4313007)) + " inches.")
+print("Angle:" + str(int(gs.angle)))
