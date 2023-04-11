@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Go to script dir
-cd "$(dirname "$0")"
-python3 collisionAvoidanceTest.py
-sleep 5
+# # Go to script dir
+# cd "$(dirname "$0")"
+# python3 collisionAvoidanceTest.py
+# sleep 5

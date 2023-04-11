@@ -64,23 +64,34 @@ class Robot:
         self.armCalibrate = armCalibrate
         self.defaultPower = defaultPower
 
-    def move(self, inch : float, power = defaultPower):
+    def move(self, inch : float, power = 0):
         """Moves 'inch' inch forward (backwards is negative.)"""
         inch *= self.moveCalibrate
+
+        if power == 0:
+            power = self.defaultPower
 
         self.t.on_for_rotations(
                 SpeedPercent(power), SpeedPercent(power), inch
                 )
 
-    def turn(self, degrees : float, power = defaultPower):
+    def turn(self, degrees : float, power = 0):
         """Turns 'degrees' degrees clockwise (counterclockwise is negative.)"""
+
+        if power == 0:
+            power = self.defaultPower/2
+
         self.t.turn_degrees(
             speed=SpeedPercent(-power),
+            error_margin=1,
             target_angle=degrees,
         )
 
-    def cartesian_move(self, x, y, power = defaultPower):
+    def cartesian_move(self, x, y, power = 0):
         """Moves to an x and y location by first moving to the y position, then turning 90 degrees and moving to the x location."""
+        if power == 0:
+            power = self.defaultPower
+
         if y!=0:
             self.move(y, power)
         if x!=0:

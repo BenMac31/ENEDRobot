@@ -2,8 +2,10 @@
 
 import ROBOT
 
-robot = ROBOT.Robot();
+robot = ROBOT.Robot(["move", "gyro"]);
 
-robot.move(24)
-robot.turn(180)
-robot.move(24)
+angle = input("Angle: ")
+while angle != "Q":
+    robot.turn(int(angle))
+    print(str(robot.gy.value()))
+    angle = input("Angle: ")
