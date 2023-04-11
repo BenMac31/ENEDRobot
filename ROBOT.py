@@ -2,7 +2,7 @@
 
 from time import sleep
 
-from ev3dev2.motor import OUTPUT_A, OUTPUT_B, SpeedPercent, MoveTank, OUTPUT_D, MediumMotor
+from ev3dev2.motor import OUTPUT_A, OUTPUT_B, SpeedPercent, MoveTank, OUTPUT_D, MediumMotor, LargeMotor
 from ev3dev2.sensor import INPUT_1, INPUT_2, INPUT_3
 from ev3dev2.sensor.lego import GyroSensor, UltrasonicSensor, ColorSensor
 # from ev3dev2.led import Leds
@@ -23,12 +23,18 @@ class Robot:
     mm = None
     s = None
     pos = None
+    rm = None
+    lm = None
     moveCalibrate = 0
     armCalibrate = 0
     defaultPower = 0
     expectedBarcode = None
     foundBarcode = None
     correctBarcode = True
+    usLock = False
+
+    backendPos = 0
+    backendPosMod = 0
 
     def __init__(self, features = [], all = False, moveCalibrate = 0.4313007, defaultPower = 50, armCalibrate = 19):
         global t, gy, cs, mm, s
@@ -37,7 +43,9 @@ class Robot:
         self.s = Sound()
         for i in features:
             if i == "move":
-                self.t = MoveTank(OUTPUT_A, OUTPUT_D)
+                self.t = MoveTank(OUTPUT_D, OUTPUT_A)
+                self.rm = LargeMotor(OUTPUT_A)
+                self.lm = LargeMotor(OUTPUT_D)
                 if self.gy:
                     self.t.gyro = self.gy
             if i == "gyro":
@@ -64,16 +72,41 @@ class Robot:
         self.armCalibrate = armCalibrate
         self.defaultPower = defaultPower
 
-    def move(self, inch : float, power = 0):
+    def check_move(self, *args, **kwargs) -> bool:
+        distance = kwargs["distance"]
+        useUS = kwargs["useUS"]
+        self.backendPos = ((self.rm.rotations+self.lm.rotations)/2) - self.backendPosMod
+        if self.backendPos > distance:
+            print("Travelled " + str(int((self.backendPos)/self.moveCalibrate)) + " inches.")
+            self.backendPosMod += self.backendPos
+            return False
+        elif (useUS == True):
+            obsDistance = self.us.distance_inches
+            if (obsDistance < 12):
+                print("Obstacle distance:" + str(int(obsDistance)) + " inches.")
+                self.usLock = True
+                self.backendPosMod += self.backendPos
+                return False
+            else:
+                return True
+        else:
+            return True
+
+    def move(self, inch : float, power = 0, useUS = True):
         """Moves 'inch' inch forward (backwards is negative.)"""
-        inch *= self.moveCalibrate
 
         if power == 0:
-            power = self.defaultPower
+            power = self.defaultPower/2
 
-        self.t.on_for_rotations(
-                SpeedPercent(power), SpeedPercent(power), inch
-                )
+        self.t.follow_gyro_angle(
+            kp=11.3, ki=0.05, kd=3.2,
+            speed=SpeedPercent(power),
+            target_angle=0,
+            sleep_time=0.01,
+            follow_for=self.check_move,
+            distance = inch*self.moveCalibrate,
+            useUS = useUS
+        )
 
     def turn(self, degrees : float, power = 0):
         """Turns 'degrees' degrees clockwise (counterclockwise is negative.)"""

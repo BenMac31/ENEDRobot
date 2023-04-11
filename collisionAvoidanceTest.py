@@ -26,7 +26,7 @@ usEnabled = True
 usLock = False
 posMod = 0
 
-def followin(tank, distance) -> bool:
+def followin(distance) -> bool:
     global usLock
     global posMod
     pos = ((rm.rotations+lm.rotations)/2) - posMod
