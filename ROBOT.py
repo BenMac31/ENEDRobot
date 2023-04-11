@@ -26,6 +26,8 @@ class Robot:
     pos = None;
     moveCalibrate : float = 0;
     defaultPower : int = 0;
+    defaultPower : int = 0;
+    expectedBarcode : int = 0;
 
     def __init__(self, features = [], all = False, moveCalibrate = 0.4313007, defaultPower = 50):
         global t, gy, cs, mm, s
@@ -82,4 +84,15 @@ class Robot:
         if x!=0:
             turnDir=(x < 0)*-2+1
             self.turn(90*turnDir, power)
-    
+
+    def parse_input_barcode(self, barcode : str):
+        """ Parses an input barcode (EX: '# # ') into the expected format of a 4 bit unsigned integer."""
+        outputNumber = 0
+        if len(barcode) == 4:
+            for i in range(4):
+                if barcode[i] == " ":
+                    outputNumber += 2**i
+        else:
+            raise ValueError("Barcode is not 4 characters long.")
+        self.expectedBarcode = outputNumber
+        return outputNumber
