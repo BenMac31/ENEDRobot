@@ -7,6 +7,7 @@ from ev3dev2.sensor import INPUT_1, INPUT_2, INPUT_3
 from ev3dev2.sensor.lego import GyroSensor, UltrasonicSensor, ColorSensor
 # from ev3dev2.led import Leds
 from ev3dev2.sound import Sound
+import statistics
 
 import display
 
@@ -201,3 +202,23 @@ class Robot:
             self.validate_barcode()
         if (pickup and self.correctBarcode):
             self.pickup()
+
+    def auto_calibrate(self):
+        """Automatically calibrates the robot moveCalibrate by moving 12 inches forward, and comparing the expected movement to the distance changed from the ultraSonics measurements."""
+        calibrations=[]
+        calibrations.append(self.moveCalibrate)
+        while True:
+            sleep (3)
+            distanceToWall = self.us.distance_inches
+            print("Distance to wall:" + str(distanceToWall) + " inches.")
+            self.move(12)
+            sleep (3)
+            newDistanceToWall = self.us.distance_inches
+            realDistanceMoved = distanceToWall-newDistanceToWall
+            print("New distance to wall:" + str(newDistanceToWall) + " inches.")
+            print("Real distance moved:" + str(realDistanceMoved) + " inches.")
+            calibrations.append(self.moveCalibrate/(realDistanceMoved/12))
+            newMoveCalibrate = statistics.mean(calibrations)
+            print("Better moveCalibrate: " + str(newMoveCalibrate))
+            self.move(-12)
+            self.moveCalibrate=newMoveCalibrate
