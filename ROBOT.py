@@ -234,7 +234,7 @@ class Robot:
         if (pickup and self.correctBarcode):
             self.pickup()
 
-    def go_to_pos(self, pos):
+    def move_to_pos(self, pos):
         """Moves to a specified position."""
         self.cartesian_move(pos[0]-self.pos[0], pos[1]-self.pos[1])
 
@@ -248,28 +248,28 @@ class Robot:
 
     def move_to_shelf(self, shelf, side):
         if shelf == "A1":
-            self.go_to_pos([6, 16+6*(-1+(2*side))])
+            self.move_to_pos([6, 16+6*(-1+(2*side))])
             self.turn(90*(-1+(2*side)))
         elif shelf == "A2":
-            self.go_to_pos([6, 42+6*(-1+(2*side))])
+            self.move_to_pos([6, 42+6*(-1+(2*side))])
             self.turn(90*(-1+(2*side)))
         elif shelf == "C1":
-            self.go_to_pos([6, 66+6*(-1+(2*side))])
+            self.move_to_pos([6, 66+6*(-1+(2*side))])
             self.turn(90*(-1+(2*side)))
         elif shelf == "C2":
-            self.go_to_pos([6, 90+6*(-1+(2*side))])
+            self.move_to_pos([6, 90+6*(-1+(2*side))])
             self.turn(90*(-1+(2*side)))
         elif shelf == "B1":
-            self.go_to_pos([60, 16+6*(-1+(2*side))])
+            self.move_to_pos([60, 16+6*(-1+(2*side))])
             self.turn(90*(-1+(2*side)))
         elif shelf == "B2":
-            self.go_to_pos([60, 42+6*(-1+(2*side))])
+            self.move_to_pos([60, 42+6*(-1+(2*side))])
             self.turn(90*(-1+(2*side)))
         elif shelf == "D1":
-            self.go_to_pos([60, 66+6*(-1+(2*side))])
+            self.move_to_pos([60, 66+6*(-1+(2*side))])
             self.turn(90*(-1+(2*side)))
         elif shelf == "D2":
-            self.go_to_pos([60, 90+6*(-1+(2*side))])
+            self.move_to_pos([60, 90+6*(-1+(2*side))])
             self.turn(90*(-1+(2*side)))
 
     def move_to_unit(self, unit):
@@ -291,7 +291,7 @@ class Robot:
         print("Debug")
         self.move_to_unit(loc[1])
 
-    def go_to_home(self, home, atHome = True):
+    def move_to_home(self, home, atHome = True):
         """Moves to specified home location"""
         if atHome:
             self.move(12)
@@ -348,7 +348,7 @@ class Robot:
                     self.turn(90)
                     self.move(12)
         else:
-            self.go_to_pos(self.pos_from_home(home))
+            self.move_to_pos(self.pos_from_home(home))
         self.home = home;
 
     def auto_calibrate(self):
