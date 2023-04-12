@@ -131,7 +131,7 @@ class Robot:
         self.t.follow_gyro_angle(
             kp=11.3, ki=0.05, kd=3.2,
             speed=SpeedPercent(power),
-            target_angle=0,
+            target_angle=self.pos[2],
             sleep_time=0.01,
             follow_for=self.check_move,
             distance = inch*self.moveCalibrate,
@@ -271,8 +271,7 @@ class Robot:
 
     def move_to_unit(self, unit):
         if self.boxStyle == "normal":
-            self.go_to_pos([self.pos[0]+3+6*((12-1)%6), self.pos[1]])
-            self.move(-(59/16))
+            self.move((3+6*((12-1)%6)-(59/16)))
 
     def move_to_loc(self, loc=None):
         """Moves to location specified"""
@@ -286,6 +285,7 @@ class Robot:
             side = True
 
         self.move_to_shelf(loc[0], side)
+        print("Debug")
         self.move_to_unit(loc[1])
 
 
