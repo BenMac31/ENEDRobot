@@ -148,15 +148,27 @@ class Robot:
         self.rm.position = 0
         self.lm.position = 0
 
-        self.t.follow_gyro_angle(
-            kp=11.3, ki=0.05, kd=3.2,
-            speed=SpeedPercent(power),
-            target_angle=self.pos[2],
-            sleep_time=0.01,
-            follow_for=self.check_move,
-            distance=inch*self.moveCalibrate,
-            useUS=useUS
-        )
+        dist=inch
+        while True:
+            self.t.follow_gyro_angle(
+                kp=11.3, ki=0.05, kd=3.2,
+                speed=SpeedPercent(power),
+                target_angle=self.pos[2],
+                sleep_time=0.01,
+                follow_for=self.check_move,
+                distance=dist*self.moveCalibrate,
+                useUS=useUS
+            )
+            if self.usLock:
+                while self.usLock:
+                    sleep(0.1)
+                    self.usLock = self.us.distance_inches < 12
+                dist-=self.backendPosMod*self.moveCalibrate
+                print("Moved " + str(self.backendPosMod*self.moveCalibrate) + " inches.")
+                print("Distand Reamining" + str(dist) + " inches.")
+            else:
+                break
+
         self.pos = [
                 self.pos[0] + inch*round(math.cos((90*math.pi)/180), 10),
                 self.pos[1] + inch*round(math.sin((90*math.pi)/180), 10),
@@ -255,12 +267,12 @@ class Robot:
         if power == 0:
             power = self.defaultPower
 
-        if self.pos[2] % 180 != 0:
+        if self.pos[2] % 180 == 0:
             if pos[1] != 0:
                 if self.pos[2] == 180:
-                    y = pos[1]-self.pos[1]
-                else:
                     y = self.pos[1]-pos[1]
+                else:
+                    y = pos[1]-self.pos[1]
                 self.move(y, power)
             if pos[0] != 0:
                 turnDir = (pos[0] < 0)*-2+1
@@ -269,9 +281,9 @@ class Robot:
         else:
             if pos[0] != 0:
                 if self.pos[2] == 180:
-                    x = pos[0]-self.pos[0]
-                else:
                     x = self.pos[0]-pos[0]
+                else:
+                    x = pos[0]-self.pos[0]
                 self.move(x, power)
             if pos[1] != 0:
                 turnDir = (pos[0] < 0)*-2+1
@@ -329,7 +341,6 @@ class Robot:
             side = True
 
         self.move_to_shelf(loc[0], side)
-        print("Debug")
         self.move_to_unit(loc[1])
 
     def move_to_home(self, home, atHome=True):
