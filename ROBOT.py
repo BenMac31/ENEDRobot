@@ -39,7 +39,7 @@ class Robot:
     backendPos = 0
     backendPosMod = 0
 
-    BoxToPickup = ["NA", 0];
+    BoxToPickup = ["NA", 0]
     currentBase = "A"
 
     boxStyle = "normal"
@@ -59,7 +59,7 @@ class Robot:
             if i == "gyro":
                 self.gy = GyroSensor(INPUT_1)
                 self.s.speak("Callibrating gyroscope, do not touch mindstorm.")
-                self.gy.calibrate();
+                self.gy.calibrate()
                 self.s.speak("Calibration complete.")
                 if self.t:
                     self.t.gyro = self.gy
@@ -228,7 +228,7 @@ class Robot:
         self.foundBarcode = barVal
 
         if showBarcode:
-            display.displayBarCode(barVal);
+            display.displayBarCode(barVal)
         if validate:
             self.validate_barcode()
         if (pickup and self.correctBarcode):
@@ -349,7 +349,7 @@ class Robot:
                     self.move(12)
         else:
             self.move_to_pos(self.pos_from_home(home))
-        self.home = home;
+        self.home = home
 
     def auto_calibrate(self):
         """Automatically calibrates the robot moveCalibrate by moving 12 inches forward, and comparing the expected movement to the distance changed from the ultraSonics measurements."""
