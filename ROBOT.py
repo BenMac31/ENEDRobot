@@ -37,7 +37,7 @@ class Robot:
     pos = [0, 0, 0]
     rm = None
     lm = None
-    moveCalibrate = 0.4313007
+    moveCalibrate = 0.45444366439024386
     armCalibrate = 19
     defaultPower = 50
     expectedBarcode = None

@@ -4,4 +4,5 @@ import ROBOT
 
 robot = ROBOT.Robot(["move", "gyro", "us"])
 
-robot.move_to_loc(["A1", 9])
+# robot.move_to_loc(["A1", 9])
+robot.auto_calibrate()
