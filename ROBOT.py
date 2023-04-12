@@ -3,6 +3,7 @@
 from time import sleep
 import statistics
 import math
+import random
 
 from ev3dev2.motor import OUTPUT_A, OUTPUT_B, SpeedPercent, MoveTank, OUTPUT_D, MediumMotor, LargeMotor
 from ev3dev2.sensor import INPUT_1, INPUT_2, INPUT_3
@@ -138,6 +139,7 @@ class Robot:
             useUS = useUS
         )
         self.pos = [self.pos[0] + inch*round(math.cos((90*math.pi)/180), 10), self.pos[1] + inch*round(math.sin((90*math.pi)/180), 10), self.pos[2]]
+        sleep (0.1)
 
     def turn(self, degrees : float, power = 0):
         """Turns 'degrees' degrees clockwise (counterclockwise is negative.)"""
@@ -259,17 +261,19 @@ class Robot:
         calibrations=[]
         calibrations.append(self.moveCalibrate)
         while True:
+            distanceToTravel=random.randint(1, 24)
             sleep (3)
             distanceToWall = self.us.distance_inches
-            print("Distance to wall:" + str(distanceToWall) + " inches.")
-            self.move(12)
+            print("Distance to travel: " + str(distanceToTravel) + " inches.")
+            print("Distance to wall: " + str(distanceToWall) + " inches.")
+            self.move(distanceToTravel, useUS=False)
             sleep (3)
             newDistanceToWall = self.us.distance_inches
             realDistanceMoved = distanceToWall-newDistanceToWall
-            print("New distance to wall:" + str(newDistanceToWall) + " inches.")
-            print("Real distance moved:" + str(realDistanceMoved) + " inches.")
-            calibrations.append(self.moveCalibrate/(realDistanceMoved/12))
+            print("New distance to wall: " + str(newDistanceToWall) + " inches.")
+            print("Real distance moved: " + str(realDistanceMoved) + " inches.")
+            calibrations.append(self.moveCalibrate/(realDistanceMoved/distanceToTravel))
             newMoveCalibrate = statistics.mean(calibrations)
             print("Better moveCalibrate: " + str(newMoveCalibrate))
-            self.move(-12)
+            self.move(-distanceToTravel, useUS=False)
             self.moveCalibrate=newMoveCalibrate
