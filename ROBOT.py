@@ -75,7 +75,7 @@ class Robot:
                 self.us = UltrasonicSensor(INPUT_2)
             if i == "medMotor":
                 self.mm = MediumMotor(OUTPUT_B)
-        self.set_home(home)
+        self.home = home
         self.pos = self.pos_from_home(home)
         self.moveCalibrate = moveCalibrate
         self.armCalibrate = armCalibrate
@@ -115,6 +115,9 @@ class Robot:
 
     def move(self, inch : float, power = 0, useUS = True):
         """Moves 'inch' inch forward (backwards is negative.)"""
+
+        if inch == 0:
+            return
 
         if power == 0:
             power = self.defaultPower/2
@@ -288,14 +291,65 @@ class Robot:
         print("Debug")
         self.move_to_unit(loc[1])
 
-
-    def set_home(self, home):
-        """Sets the home location."""
-        self.home = home
-
-    def go_to_home(self, home):
+    def go_to_home(self, home, atHome = True):
         """Moves to specified home location"""
-        self.go_to_pos(self.pos_from_home(home))
+        if atHome:
+            self.move(12)
+            if self.home == "A":
+                if home == "D":
+                    self.turn(90)
+                    self.move(96)
+                    self.turn(-90)
+                    self.move(108)
+                if home == "C":
+                    self.move(108)
+                if home == "B":
+                    self.turn(90)
+                    self.move(96)
+                    self.turn(-90)
+                    self.move(12)
+            elif self.home == "B":
+                if home == "C":
+                    self.turn(-90)
+                    self.move(96)
+                    self.turn(90)
+                    self.move(108)
+                if home == "D":
+                    self.move(108)
+                if home == "A":
+                    self.turn(-90)
+                    self.move(96)
+                    self.turn(90)
+                    self.move(12)
+            elif self.home == "C":
+                if home == "B":
+                    self.turn(90)
+                    self.move(96)
+                    self.turn(-90)
+                    self.move(108)
+                if home == "A":
+                    self.move(108)
+                if home == "D":
+                    self.turn(90)
+                    self.move(96)
+                    self.turn(-90)
+                    self.move(12)
+            elif self.home == "D":
+                if home == "A":
+                    self.turn(-90)
+                    self.move(96)
+                    self.turn(90)
+                    self.move(108)
+                if home == "B":
+                    self.move(108)
+                if home == "C":
+                    self.turn(-90)
+                    self.move(96)
+                    self.turn(90)
+                    self.move(12)
+        else:
+            self.go_to_pos(self.pos_from_home(home))
+        self.home = home;
 
     def auto_calibrate(self):
         """Automatically calibrates the robot moveCalibrate by moving 12 inches forward, and comparing the expected movement to the distance changed from the ultraSonics measurements."""
