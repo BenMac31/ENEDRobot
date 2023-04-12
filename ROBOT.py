@@ -177,17 +177,6 @@ class Robot:
 
         self.pos[2] = self.pos[2]+degrees
 
-    def cartesian_move(self, x, y, power=0):
-        """Moves to an x and y location."""
-        if power == 0:
-            power = self.defaultPower
-
-        if y != 0:
-            self.move(y, power)
-        if x != 0:
-            turnDir = (x < 0)*-2+1
-            self.turn(90*turnDir, power)
-
     def parse_input_barcode(self, barcode: str):
         """Parses an input barcode into the expected format of a 4 bit
         unsigned integer.
@@ -260,9 +249,34 @@ class Robot:
         if (pickup and self.correctBarcode):
             self.pickup()
 
-    def move_to_pos(self, pos):
+    def move_to_pos(self, pos, power=0):
         """Moves to a specified position."""
-        self.cartesian_move(pos[0]-self.pos[0], pos[1]-self.pos[1])
+
+        if power == 0:
+            power = self.defaultPower
+
+        if self.pos[2] % 180 != 0:
+            if pos[1] != 0:
+                if self.pos[2] == 180:
+                    y = pos[1]-self.pos[1]
+                else:
+                    y = self.pos[1]-pos[1]
+                self.move(y, power)
+            if pos[0] != 0:
+                turnDir = (pos[0] < 0)*-2+1
+                self.turn(90*turnDir, power)
+                self.move(pos[0])
+        else:
+            if pos[0] != 0:
+                if self.pos[2] == 180:
+                    x = pos[0]-self.pos[0]
+                else:
+                    x = self.pos[0]-pos[0]
+                self.move(x, power)
+            if pos[1] != 0:
+                turnDir = (pos[0] < 0)*-2+1
+                self.turn(90*turnDir, power)
+                self.move(pos[1])
 
     def set_loc(self, list):
         """Reads the first item of list (should be a string), as the shelf, and
