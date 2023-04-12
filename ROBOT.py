@@ -97,7 +97,6 @@ class Robot:
         useUS = kwargs["useUS"]
         self.backendPos = ((self.rm.rotations+self.lm.rotations)/2) - self.backendPosMod
         if abs(self.backendPos) > abs(distance):
-            print("Travelled " + str(int((self.backendPos)/self.moveCalibrate)) + " inches.")
             self.backendPosMod += self.backendPos
             return False
         elif (useUS == True):
@@ -126,8 +125,6 @@ class Robot:
         self.backendPos = 0
         self.rm.position = 0
         self.lm.position = 0
-        print("lm: " + str(self.lm.rotations))
-        print("rm: " + str(self.rm.rotations))
 
         self.t.follow_gyro_angle(
             kp=11.3, ki=0.05, kd=3.2,
