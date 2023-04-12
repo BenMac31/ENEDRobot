@@ -120,7 +120,7 @@ class Robot:
             power = self.defaultPower/2
 
         self.t.turn_degrees(
-            speed=SpeedPercent(-power),
+            speed=SpeedPercent(power),
             error_margin=1,
             target_angle=degrees,
         )
