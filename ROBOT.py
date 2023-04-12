@@ -37,7 +37,7 @@ class Robot:
     pos = [0, 0, 0]
     rm = None
     lm = None
-    moveCalibrate = 0.45444366439024386
+    moveCalibrate = 0.44444366439024386
     armCalibrate = 19
     defaultPower = 50
     expectedBarcode = None
@@ -137,7 +137,7 @@ class Robot:
             return
 
         if power == 0:
-            power = self.defaultPower / 2
+            power = self.defaultPower
 
         if inch < 0:
             useUS = False
@@ -343,62 +343,66 @@ class Robot:
         self.move_to_shelf(loc[0], side)
         self.move_to_unit(loc[1])
 
-    def move_to_home(self, home, atHome=True):
+    def move_to_home(self, home, atHome=True, power = 0):
         """Moves to specified home location"""
+
+        if power == 0:
+            power = self.defaultPower
+
         if atHome:
             self.move(12)
             if self.home == "A":
                 if home == "D":
-                    self.turn(90)
-                    self.move(96)
-                    self.turn(-90)
-                    self.move(108)
+                    self.turn(90, power)
+                    self.move(96, power)
+                    self.turn(-90, power)
+                    self.move(108, power)
                 if home == "C":
-                    self.move(108)
+                    self.move(108, power)
                 if home == "B":
-                    self.turn(90)
-                    self.move(96)
-                    self.turn(-90)
-                    self.move(12)
+                    self.turn(90, power)
+                    self.move(96, power)
+                    self.turn(-90, power)
+                    self.move(12, power)
             elif self.home == "B":
                 if home == "C":
-                    self.turn(-90)
-                    self.move(96)
-                    self.turn(90)
-                    self.move(108)
+                    self.turn(-90, power)
+                    self.move(96, power)
+                    self.turn(90, power)
+                    self.move(108, power)
                 if home == "D":
-                    self.move(108)
+                    self.move(108, power)
                 if home == "A":
-                    self.turn(-90)
-                    self.move(96)
-                    self.turn(90)
-                    self.move(12)
+                    self.turn(-90, power)
+                    self.move(96, power)
+                    self.turn(90, power)
+                    self.move(-12, power)
             elif self.home == "C":
                 if home == "B":
-                    self.turn(90)
-                    self.move(96)
-                    self.turn(-90)
-                    self.move(108)
+                    self.turn(90, power)
+                    self.move(96, power)
+                    self.turn(-90, power)
+                    self.move(108, power)
                 if home == "A":
-                    self.move(108)
+                    self.move(108, power)
                 if home == "D":
-                    self.turn(90)
-                    self.move(96)
-                    self.turn(-90)
-                    self.move(12)
+                    self.turn(90, power)
+                    self.move(96, power)
+                    self.turn(-90, power)
+                    self.move(12, power)
             elif self.home == "D":
                 if home == "A":
-                    self.turn(-90)
-                    self.move(96)
-                    self.turn(90)
-                    self.move(108)
+                    self.turn(-90, power)
+                    self.move(96, power)
+                    self.turn(90, power)
+                    self.move(108, power)
                 if home == "B":
-                    self.move(108)
+                    self.move(108, power)
                 if home == "C":
-                    self.turn(-90)
-                    self.move(96)
-                    self.turn(90)
-                    self.move(12)
+                    self.turn(-90, power)
+                    self.move(96, power)
+                    self.turn(90, power)
+                    self.move(12, power)
         else:
             self.move_to_pos(self.pos_from_home(home))
         self.home = home
