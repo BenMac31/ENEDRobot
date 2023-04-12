@@ -4,4 +4,5 @@ import ROBOT
 
 robot = ROBOT.Robot(["move", "gyro", "us"]);
 
-robot.move(24)
+robot.move(-12)
+robot.move(12)
