@@ -4,4 +4,4 @@ import ROBOT
 
 robot = ROBOT.Robot(["move", "gyro", "us"]);
 
-robot.auto_calibrate()
+robot.move_to_loc(["A1", 9])

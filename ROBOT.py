@@ -42,6 +42,8 @@ class Robot:
     BoxToPickup = ["NA", 0];
     currentBase = "A"
 
+    boxStyle = "normal"
+
     def __init__(self, features = [], all = False, moveCalibrate = 0.4313007, defaultPower = 50, armCalibrate = 19, home = "A"):
         global t, gy, cs, mm, s
         if all == True or len(features) == 0:
@@ -241,10 +243,51 @@ class Robot:
         else:
             raise ValueError("List is not 2 items long.")
 
+    def move_to_shelf(self, shelf, side):
+        if shelf == "A1":
+            self.go_to_pos([6, 16+6*(-1+(2*side))])
+            self.turn(90*(-1+(2*side)))
+        elif shelf == "A2":
+            self.go_to_pos([6, 42+6*(-1+(2*side))])
+            self.turn(90*(-1+(2*side)))
+        elif shelf == "C1":
+            self.go_to_pos([6, 66+6*(-1+(2*side))])
+            self.turn(90*(-1+(2*side)))
+        elif shelf == "C2":
+            self.go_to_pos([6, 90+6*(-1+(2*side))])
+            self.turn(90*(-1+(2*side)))
+        elif shelf == "B1":
+            self.go_to_pos([60, 16+6*(-1+(2*side))])
+            self.turn(90*(-1+(2*side)))
+        elif shelf == "B2":
+            self.go_to_pos([60, 42+6*(-1+(2*side))])
+            self.turn(90*(-1+(2*side)))
+        elif shelf == "D1":
+            self.go_to_pos([60, 66+6*(-1+(2*side))])
+            self.turn(90*(-1+(2*side)))
+        elif shelf == "D2":
+            self.go_to_pos([60, 90+6*(-1+(2*side))])
+            self.turn(90*(-1+(2*side)))
+
+    def move_to_unit(self, unit):
+        if self.boxStyle == "normal":
+            self.go_to_pos([self.pos[0]+3+6*((12-1)%6), self.pos[1]])
+            self.move(-(59/16))
+
     def move_to_loc(self, loc=None):
         """Moves to location specified"""
+
         if loc != None:
             self.set_loc(loc)
+
+        if loc[1] > 6:
+            side = False
+        else:
+            side = True
+
+        self.move_to_shelf(loc[0], side)
+        self.move_to_unit(loc[1])
+
 
     def set_home(self, home):
         """Sets the home location."""
@@ -252,6 +295,7 @@ class Robot:
 
     def go_to_home(self, home):
         """Moves to specified home location"""
+        self.go_to_pos(self.pos_from_home(home))
 
     def auto_calibrate(self):
         """Automatically calibrates the robot moveCalibrate by moving 12 inches forward, and comparing the expected movement to the distance changed from the ultraSonics measurements."""
@@ -261,6 +305,7 @@ class Robot:
             distanceToTravel=random.randint(1, 24)
             sleep (3)
             distanceToWall = self.us.distance_inches
+            print("Angle: " + str(self.gy.angle) + " degrees.")
             print("Distance to travel: " + str(distanceToTravel) + " inches.")
             print("Distance to wall: " + str(distanceToWall) + " inches.")
             self.move(distanceToTravel, useUS=False)
