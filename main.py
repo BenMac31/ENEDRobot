@@ -2,6 +2,6 @@
 
 import ROBOT
 
-robot = ROBOT.Robot(["move", "gyro", "us"]);
+robot = ROBOT.Robot(["move", "gyro", "us"])
 
 robot.move_to_loc(["A1", 9])
