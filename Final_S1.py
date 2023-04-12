@@ -4,5 +4,10 @@ import ROBOT
 
 robot = ROBOT.Robot(["move", "gyro", "us"])
 
-robot.move_to_loc(["A1", 9])
+robot.move(36)
+robot.turn(90)
+robot.move(26)
+robot.move(10)
+robot.turn(90)
+robot.move(36)
 robot.move_to_home("B", atHome=False)

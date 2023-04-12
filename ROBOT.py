@@ -227,17 +227,17 @@ class Robot:
     def pickup(self):
         # Movement logic for picking up the box
         self.defaultPower = 20
-        self.move(2)
+        self.move(2, useUS=False)
         self.turn(90)
-        self.move(1)
-        self.turn_arm_degrees(90)
-        self.move(-2)
+        self.move(1, useUS=False)
         self.turn_arm_degrees(-90)
-        self.move(12)
+        self.move(-3, useUS=False)
         self.turn_arm_degrees(90)
+        self.move(12, useUS=False)
+        self.turn_arm_degrees(-90)
         self.defaultPower = 50
         self.move(6)
-        self.turn_arm_degrees(-90)
+        self.turn_arm_degrees(90)
 
     def scan_barcode(self, pickup=False, validate=False, showBarcode=True):
         barVal = 0
@@ -327,7 +327,7 @@ class Robot:
 
     def move_to_unit(self, unit):
         if self.boxStyle == "normal":
-            self.move((3+6*((12-1) % 6)-(59/16)))
+            self.move((3+6*((12-1) % 6)))
 
     def move_to_loc(self, loc=None):
         """Moves to location specified"""
