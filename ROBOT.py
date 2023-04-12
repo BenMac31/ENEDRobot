@@ -1,13 +1,14 @@
 #!/usr/bin/env python3
 
 from time import sleep
+import statistics
+import math
 
 from ev3dev2.motor import OUTPUT_A, OUTPUT_B, SpeedPercent, MoveTank, OUTPUT_D, MediumMotor, LargeMotor
 from ev3dev2.sensor import INPUT_1, INPUT_2, INPUT_3
 from ev3dev2.sensor.lego import GyroSensor, UltrasonicSensor, ColorSensor
 # from ev3dev2.led import Leds
 from ev3dev2.sound import Sound
-import statistics
 
 import display
 
@@ -23,7 +24,7 @@ class Robot:
     cs = None
     mm = None
     s = None
-    pos = None
+    pos = [0, 0, 0]
     rm = None
     lm = None
     moveCalibrate = 0
@@ -37,7 +38,10 @@ class Robot:
     backendPos = 0
     backendPosMod = 0
 
-    def __init__(self, features = [], all = False, moveCalibrate = 0.4313007, defaultPower = 50, armCalibrate = 19):
+    BoxToPickup = ["NA", 0];
+    currentBase = "A"
+
+    def __init__(self, features = [], all = False, moveCalibrate = 0.4313007, defaultPower = 50, armCalibrate = 19, home = "A"):
         global t, gy, cs, mm, s
         if all == True or len(features) == 0:
             features = ["move", "gyro", "us", "colour", "medMotor"]
@@ -68,10 +72,24 @@ class Robot:
                 self.us = UltrasonicSensor(INPUT_2)
             if i == "medMotor":
                 self.mm = MediumMotor(OUTPUT_B)
-        self.pos = [0, 0]
+        self.set_home(home)
+        self.pos = self.pos_from_home(home)
         self.moveCalibrate = moveCalibrate
         self.armCalibrate = armCalibrate
         self.defaultPower = defaultPower
+
+    def pos_from_home(self, home):
+        if home == "A":
+            pos = [6, -6, 0]
+        elif home == "B":
+            pos = [102, -6, 0]
+        elif home == "C":
+            pos = [6, 114, 180]
+        elif home == "D":
+            pos = [102, 114, 180]
+        else:
+            raise ValueError("Invalid Home")
+        return pos
 
     def check_move(self, *args, **kwargs) -> bool:
         distance = kwargs["distance"]
@@ -103,6 +121,13 @@ class Robot:
             useUS = False
             power*=-1
 
+        self.backendPosMod = 0
+        self.backendPos = 0
+        self.rm.position = 0
+        self.lm.position = 0
+        print("lm: " + str(self.lm.rotations))
+        print("rm: " + str(self.rm.rotations))
+
         self.t.follow_gyro_angle(
             kp=11.3, ki=0.05, kd=3.2,
             speed=SpeedPercent(power),
@@ -112,6 +137,7 @@ class Robot:
             distance = inch*self.moveCalibrate,
             useUS = useUS
         )
+        self.pos = [self.pos[0] + inch*round(math.cos((90*math.pi)/180), 10), self.pos[1] + inch*round(math.sin((90*math.pi)/180), 10), self.pos[2]]
 
     def turn(self, degrees : float, power = 0):
         """Turns 'degrees' degrees clockwise (counterclockwise is negative.)"""
@@ -124,6 +150,8 @@ class Robot:
             error_margin=1,
             target_angle=degrees,
         )
+
+        self.pos[2] = self.pos[2]+degrees
 
     def cartesian_move(self, x, y, power = 0):
         """Moves to an x and y location by first moving to the y position, then turning 90 degrees and moving to the x location."""
@@ -180,7 +208,6 @@ class Robot:
         self.move(6)
         self.turn_arm_degrees(-90)
 
-
     def scan_barcode(self, pickup = False, validate = False, showBarcode = True):
         barVal = 0
         cols=[0 for _ in range(4)]
@@ -202,6 +229,30 @@ class Robot:
             self.validate_barcode()
         if (pickup and self.correctBarcode):
             self.pickup()
+
+    def go_to_pos(self, pos):
+        """Moves to a specified position."""
+        self.cartesian_move(pos[0]-self.pos[0], pos[1]-self.pos[1])
+
+    def set_loc(self, list):
+        """Reads the first item of list (should be a string), as the shelf, and the second item as the item."""
+        if len(list) == 2:
+            self.BoxToPickup[0] = list[0]
+            self.BoxToPickup[1] = list[1]
+        else:
+            raise ValueError("List is not 2 items long.")
+
+    def move_to_loc(self, loc=None):
+        """Moves to location specified"""
+        if loc != None:
+            self.set_loc(loc)
+
+    def set_home(self, home):
+        """Sets the home location."""
+        self.home = home
+
+    def go_to_home(self, home):
+        """Moves to specified home location"""
 
     def auto_calibrate(self):
         """Automatically calibrates the robot moveCalibrate by moving 12 inches forward, and comparing the expected movement to the distance changed from the ultraSonics measurements."""
